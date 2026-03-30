@@ -4,10 +4,12 @@ const df = require('durable-functions');
 const activityName = 'durableHello1';
 
 df.app.orchestration('durableHello1Orchestrator', function* (context) {
-    const outputs = [];
-    outputs.push(yield context.df.callActivity(activityName, 'Tokyo'));
-    outputs.push(yield context.df.callActivity(activityName, 'Seattle'));
-    outputs.push(yield context.df.callActivity(activityName, 'Cairo'));
+    const tasks = [];
+    tasks.push(context.df.callActivity(activityName, 'Tokyo'));
+    tasks.push(context.df.callActivity(activityName, 'Seattle'));
+    tasks.push(context.df.callActivity(activityName, 'Cairo'));
+
+    const outputs = yield context.df.Task.all(tasks);
 
     return outputs;
 });
