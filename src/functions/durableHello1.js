@@ -15,8 +15,10 @@ df.app.orchestration('durableHello1Orchestrator', function* (context) {
 });
 
 df.app.activity(activityName, {
-    handler: (input) => {
-        return `Hello, ${input}`;
+    handler: (input, context) => {
+        const result = `Hello, ${input}`;
+        context.log(`Activity processed: ${input} → ${result}`);
+        return result;
     },
 });
 
